@@ -10,7 +10,7 @@
     <schema id="4" parent="1" name="mysql"/>
     <schema id="5" parent="1" name="performance_schema"/>
     <schema id="6" parent="1" name="phpmyadmin"/>
-    <schema id="7" parent="1" name="test"/>
+    <schema id="7" parent="1" name="sys"/>
     <table id="8" parent="2" name="comments"/>
     <table id="9" parent="2" name="posts"/>
     <table id="10" parent="2" name="users"/>
