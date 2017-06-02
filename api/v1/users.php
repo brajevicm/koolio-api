@@ -10,6 +10,6 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Token, token, TOKEN');
 
-require '../users.php';
+require '../users_functions.php';
 
-echo getUsers();
+echo getSafeUsers();

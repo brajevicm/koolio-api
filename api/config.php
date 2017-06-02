@@ -13,6 +13,8 @@ define('DB_HOST', 'localhost');
 define('DB_TABLE_USERS', 'users');
 define('DB_TABLE_COMMENTS', 'comments');
 define('DB_TABLE_POSTS', 'posts');
+define('DB_TABLE_FLAGS', 'flags');
+define('DB_TABLE_ROLES', 'roles');
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
