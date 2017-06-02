@@ -20,7 +20,6 @@ function getAllUsers()
         (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_USERS . '.flag_id) AS flag, 
         (SELECT name FROM ' . DB_TABLE_ROLES . ' WHERE id = ' . DB_TABLE_USERS . '.role_id) as role 
         FROM ' . DB_TABLE_USERS;
-    echo $query;
     $users = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();
@@ -54,7 +53,6 @@ function getSafeUsers()
         (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_USERS . '.flag_id) AS flag, 
         (SELECT name FROM ' . DB_TABLE_ROLES . ' WHERE id = ' . DB_TABLE_USERS . '.role_id) as role 
         FROM ' . DB_TABLE_USERS . ' WHERE flag_id = 1';
-    echo $query;
     $users = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();

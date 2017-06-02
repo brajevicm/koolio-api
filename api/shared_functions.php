@@ -21,7 +21,7 @@ function checkIfLoggedIn()
     global $conn;
     if (isset($_SERVER['HTTP_TOKEN'])) {
         $token = $_SERVER['HTTP_TOKEN'];
-        $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE token=?)';
+        $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE token=? AND flag_id = 1)';
         $result = $conn->prepare($query);
         $result->bind_param('s', $token);
         $result->execute();
@@ -49,7 +49,7 @@ function login($username, $password)
     if (checkLogin($username, $password)) {
         $id = sha1(uniqid());
         $hashedPassword = md5($password);
-        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';
+        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=? AND flag_id = 1';
         $result = $conn->prepare($query);
         $result->bind_param('ss', $id, $hashedPassword);
         $result->execute();
@@ -71,7 +71,7 @@ function checkLogin($username, $password)
 {
     global $conn;
     $hashedPassword = md5($password);
-    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE username=? AND password=?)';
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE username=? AND password=? AND flag_id = 1)';
     $result = $conn->prepare($query);
     $result->bind_param("ss", $username, $hashedPassword);
     $result->execute();
@@ -132,10 +132,13 @@ function register($username, $password, $firstname, $lastname)
         $errors .= 'Last name must have at least 3 characters.';
     }
     if ($errors === '') {
-        $query = 'INSERT INTO ' . DB_TABLE_USERS . ' (username, password, firstname, lastname) VALUES (?, ?, ?, ?)';
+        $query = 'INSERT INTO ' . DB_TABLE_USERS . ' (username, password, firstname, lastname, flag_id, role_id) 
+            VALUES (?, ?, ?, ?, ?, ?)';
         $statement = $conn->prepare($query);
         $hashedPassword = md5($password);
-        $statement->bind_param('ssss', $username, $hashedPassword, $firstname, $lastname);
+        $flag_id = 1;
+        $role_id = 1;
+        $statement->bind_param('ssss', $username, $hashedPassword, $firstname, $lastname, $flag_id, $role_id);
         if ($statement->execute()) {
             $id = sha1(uniqid());
             $query2 = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';

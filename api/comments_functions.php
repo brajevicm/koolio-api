@@ -79,7 +79,6 @@ function getFilteredComments()
     $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, text, upvotes, timestamp, post_id, 
         (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user 
         FROM ' . DB_TABLE_COMMENTS . ' WHERE flag_id = 1';
-    echo $query;
     $comments = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();
