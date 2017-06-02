@@ -76,17 +76,23 @@ function getFilteredComments()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, text, upvotes, timestamp, post_id, 
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user 
+    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, user_id, post_id, flag_id text, upvotes, timestamp, post_id, 
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user,
+         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post
         FROM ' . DB_TABLE_COMMENTS . ' WHERE flag_id = 1';
+    echo $query;
     $comments = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();
         $result = $statement->get_result();
         while ($row = $result->fetch_assoc()) {
             $comment = array();
+            $comment['id'] = $row['id'];
+            $comment['user_id'] = $row['user_id'];
             $comment['user'] = $row['user'];
             $comment['post_id'] = $row['post_id'];
+            $comment['post'] = $row['post'];
+            $comment['flag_id'] = $row['flag_id'];
             $comment['text'] = $row['text'];
             $comment['upvotes'] = $row['upvotes'];
             $comment['timestamp'] = $row['timestamp'];

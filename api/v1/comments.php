@@ -12,4 +12,4 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../comments_functions.php';
 
-echo getSafeComments();
+echo getFilteredComments();

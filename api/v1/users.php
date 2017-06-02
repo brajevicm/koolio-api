@@ -12,4 +12,4 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../users_functions.php';
 
-echo getSafeUsers();
+echo getFilteredUsers();

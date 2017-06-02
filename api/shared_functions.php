@@ -49,7 +49,7 @@ function login($username, $password)
     if (checkLogin($username, $password)) {
         $id = sha1(uniqid());
         $hashedPassword = md5($password);
-        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=? AND flag_id = 1';
+        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';
         $result = $conn->prepare($query);
         $result->bind_param('ss', $id, $hashedPassword);
         $result->execute();
@@ -111,7 +111,7 @@ function checkIfUserExists($username)
  * @param $lastname
  * @return string
  */
-function register($username, $password, $firstname, $lastname)
+function register($username, $password, $firstname, $lastname, $image)
 {
     global $conn;
     $message = array();
@@ -132,13 +132,13 @@ function register($username, $password, $firstname, $lastname)
         $errors .= 'Last name must have at least 3 characters.';
     }
     if ($errors === '') {
-        $query = 'INSERT INTO ' . DB_TABLE_USERS . ' (username, password, firstname, lastname, flag_id, role_id) 
-            VALUES (?, ?, ?, ?, ?, ?)';
+        $query = 'INSERT INTO ' . DB_TABLE_USERS . ' (username, password, firstname, lastname, flag_id, role_id, image) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)';
         $statement = $conn->prepare($query);
         $hashedPassword = md5($password);
         $flag_id = 1;
         $role_id = 1;
-        $statement->bind_param('ssss', $username, $hashedPassword, $firstname, $lastname, $flag_id, $role_id);
+        $statement->bind_param('ssssii,s', $username, $hashedPassword, $firstname, $lastname, $flag_id, $role_id, $image);
         if ($statement->execute()) {
             $id = sha1(uniqid());
             $query2 = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';

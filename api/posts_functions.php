@@ -21,12 +21,12 @@ function addPost($user_id, $title, $image)
     $message = array();
     if (checkIfLoggedIn()) {
         $query = 'INSERT INTO ' . DB_TABLE_POSTS . ' (user_id, title, image, upvotes, comments, flag_id) 
-        VALUES (?, ?, ?, ?, ?)';
+        VALUES (?, ?, ?, ?, ?, ?)';
         $result = $conn->prepare($query);
         $upvotes = 0;
         $comments = 0;
         $flag = 1;
-        $result->bind_param('issii', $user_id, $title, $image, $upvotes, $comments, $flag);
+        $result->bind_param('issiii', $user_id, $title, $image, $upvotes, $comments, $flag);
         if ($result->execute()) {
             $message['success'] = 'You have successfully uploaded a post.';
         } else {
@@ -47,7 +47,9 @@ function getUnfilteredPosts()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, text, upvotes, timestamp, post_id, (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.flag_id) AS flag, (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user FROM ' . DB_TABLE_COMMENTS;
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, user_id, flag_id, title, image, upvotes, timestamp, comments,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user 
+        FROM ' . DB_TABLE_POSTS;
     $posts = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();
@@ -55,8 +57,9 @@ function getUnfilteredPosts()
         while ($row = $result->fetch_assoc()) {
             $post = array();
             $post['id'] = $row['id'];
+            $post['user_id'] = $row['user_id'];
             $post['user'] = $row['user'];
-            $post['flag'] = $row['flag'];
+            $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];
             $post['timestamp'] = $row['timestamp'];
@@ -77,9 +80,9 @@ function getFilteredPosts()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, text, upvotes, timestamp, post_id,  
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user 
-        FROM ' . DB_TABLE_COMMENTS . ' WHERE flag_id = 1';
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, user_id, flag_id, title, image, upvotes, timestamp, comments,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user 
+        FROM ' . DB_TABLE_POSTS . ' WHERE flag_id = 1';
     $posts = array();
     if ($statement = $conn->prepare($query)) {
         $statement->execute();
@@ -87,7 +90,9 @@ function getFilteredPosts()
         while ($row = $result->fetch_assoc()) {
             $post = array();
             $post['id'] = $row['id'];
+            $post['user_id'] = $row['user_id'];
             $post['user'] = $row['user'];
+            $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];
             $post['timestamp'] = $row['timestamp'];
@@ -97,7 +102,7 @@ function getFilteredPosts()
         }
     }
     $message['posts'] = $posts;
-    return json_encode($message);
+    return json_encode($posts);
 }
 
 /**

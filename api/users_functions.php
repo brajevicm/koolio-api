@@ -16,7 +16,7 @@ function getAllUsers()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_USERS . '.id, username, password, firstname, lastname, 
+    $query = 'SELECT ' . DB_TABLE_USERS . '.id, username, password, firstname, lastname, image,
         (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_USERS . '.flag_id) AS flag, 
         (SELECT name FROM ' . DB_TABLE_ROLES . ' WHERE id = ' . DB_TABLE_USERS . '.role_id) as role 
         FROM ' . DB_TABLE_USERS;
@@ -33,6 +33,7 @@ function getAllUsers()
             $user['password'] = $row['password'];
             $user['firstname'] = $row['firstname'];
             $user['lastname'] = $row['lastname'];
+            $user['image'] = $row['image'];
             array_push($users, $user);
         }
     }
@@ -44,11 +45,11 @@ function getAllUsers()
  * Finished
  * @return string
  */
-function getSafeUsers()
+function getFilteredUsers()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_USERS . '.id, username, password, firstname, lastname, 
+    $query = 'SELECT ' . DB_TABLE_USERS . '.id, username, password, firstname, lastname, image 
         (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_USERS . '.flag_id) AS flag, 
         (SELECT name FROM ' . DB_TABLE_ROLES . ' WHERE id = ' . DB_TABLE_USERS . '.role_id) as role 
         FROM ' . DB_TABLE_USERS . ' WHERE flag_id = 1';
@@ -64,6 +65,7 @@ function getSafeUsers()
             $user['password'] = $row['password'];
             $user['firstname'] = $row['firstname'];
             $user['lastname'] = $row['lastname'];
+            $user['image'] = $row['image'];
             array_push($users, $user);
         }
     }
