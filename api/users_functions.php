@@ -33,7 +33,6 @@ function getAllUsers()
             $user['password'] = $row['password'];
             $user['firstname'] = $row['firstname'];
             $user['lastname'] = $row['lastname'];
-            $user['token'] = $row['token'];
             array_push($users, $user);
         }
     }
@@ -65,7 +64,6 @@ function getSafeUsers()
             $user['password'] = $row['password'];
             $user['firstname'] = $row['firstname'];
             $user['lastname'] = $row['lastname'];
-            $user['token'] = $row['token'];
             array_push($users, $user);
         }
     }

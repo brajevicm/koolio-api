@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aadf567e-1427-4742-b80b-cfbc747329d7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/comments_functions.php" afterPath="$PROJECT_DIR$/api/comments_functions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/shared_functions.php" afterPath="$PROJECT_DIR$/api/shared_functions.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/users_functions.php" afterPath="$PROJECT_DIR$/api/users_functions.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -62,18 +61,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users_functions.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="users_functions.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/users_functions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="54" column="55" lean-forward="false" selection-start-line="54" selection-start-column="55" selection-end-line="54" selection-end-column="55" />
+            <state relative-caret-position="390">
+              <caret line="32" column="49" lean-forward="false" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
               <folding>
                 <element signature="e#6#90#0#PHP" expanded="true" />
-                <marker date="1496404880470" expanded="true" signature="1395:1402" ph="SELECT FROM " />
-                <marker date="1496404880470" expanded="true" signature="1395:1496" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
-                <marker date="1496404880470" expanded="true" signature="1395:1562" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
-                <marker date="1496404880470" expanded="true" signature="1395:1687" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-                <marker date="1496404880470" expanded="true" signature="1480:1496" ph="SELECT flag_... " />
+                <marker date="1496405139045" expanded="true" signature="1351:1358" ph="SELECT FROM " />
+                <marker date="1496405139045" expanded="true" signature="1351:1452" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
+                <marker date="1496405139045" expanded="true" signature="1351:1518" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
+                <marker date="1496405139045" expanded="true" signature="1351:1643" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+                <marker date="1496405139045" expanded="true" signature="1436:1452" ph="SELECT flag_... " />
               </folding>
             </state>
           </provider>
@@ -93,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared_functions.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shared_functions.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/shared_functions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="140" column="108" lean-forward="false" selection-start-line="140" selection-start-column="108" selection-end-line="140" selection-end-column="108" />
+            <state relative-caret-position="491">
+              <caret line="157" column="1" lean-forward="true" selection-start-line="157" selection-start-column="1" selection-end-line="157" selection-end-column="1" />
               <folding>
                 <element signature="e#6#90#0#PHP" expanded="true" />
                 <marker date="1496404986945" expanded="true" signature="365:447" ph="SELECT EXIST... " />
@@ -156,9 +155,9 @@
         <option value="$PROJECT_DIR$/api/v1/comments.php" />
         <option value="$PROJECT_DIR$/api/v1/users.php" />
         <option value="$PROJECT_DIR$/api/posts_functions.php" />
-        <option value="$PROJECT_DIR$/api/users_functions.php" />
         <option value="$PROJECT_DIR$/api/comments_functions.php" />
         <option value="$PROJECT_DIR$/api/shared_functions.php" />
+        <option value="$PROJECT_DIR$/api/users_functions.php" />
       </list>
     </option>
   </component>
@@ -352,15 +351,15 @@
       <workItem from="1496321309760" duration="600000" />
       <workItem from="1496334644366" duration="1718000" />
       <workItem from="1496336590946" duration="13000" />
-      <workItem from="1496336632102" duration="4605000" />
+      <workItem from="1496336632102" duration="4766000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19836000" />
+    <option name="totallyTimeSpent" value="19997000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1366" height="741" extended-state="0" />
+    <frame x="0" y="27" width="1366" height="741" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27279636" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -626,21 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/users_functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="54" column="55" lean-forward="false" selection-start-line="54" selection-start-column="55" selection-end-line="54" selection-end-column="55" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="true" />
-            <marker date="1496404880470" expanded="true" signature="1395:1402" ph="SELECT FROM " />
-            <marker date="1496404880470" expanded="true" signature="1395:1496" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
-            <marker date="1496404880470" expanded="true" signature="1395:1562" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
-            <marker date="1496404880470" expanded="true" signature="1395:1687" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496404880470" expanded="true" signature="1480:1496" ph="SELECT flag_... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/comments_functions.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -666,8 +650,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/shared_functions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="140" column="108" lean-forward="false" selection-start-line="140" selection-start-column="108" selection-end-line="140" selection-end-column="108" />
+        <state relative-caret-position="491">
+          <caret line="157" column="1" lean-forward="true" selection-start-line="157" selection-start-column="1" selection-end-line="157" selection-end-column="1" />
           <folding>
             <element signature="e#6#90#0#PHP" expanded="true" />
             <marker date="1496404986945" expanded="true" signature="365:447" ph="SELECT EXIST... " />
@@ -679,6 +663,21 @@
             <marker date="1496404986945" expanded="true" signature="2093:2162" ph="SELECT EXIST... " />
             <marker date="1496404986945" expanded="true" signature="2108:2161" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
             <marker date="1496404986945" expanded="true" signature="3183:3316" ph="INSERT INTO ${DB_TABLE_USERS}... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/users_functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="32" column="49" lean-forward="false" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
+          <folding>
+            <element signature="e#6#90#0#PHP" expanded="true" />
+            <marker date="1496405139045" expanded="true" signature="1351:1358" ph="SELECT FROM " />
+            <marker date="1496405139045" expanded="true" signature="1351:1452" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
+            <marker date="1496405139045" expanded="true" signature="1351:1518" ph="SELECT FROM ${DB_TABLE_USERS}.id... " />
+            <marker date="1496405139045" expanded="true" signature="1351:1643" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496405139045" expanded="true" signature="1436:1452" ph="SELECT flag_... " />
           </folding>
         </state>
       </provider>
