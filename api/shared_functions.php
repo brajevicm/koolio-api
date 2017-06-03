@@ -46,17 +46,18 @@ function login($username, $password)
 {
     global $conn;
     $message = array();
-    if (checkLogin($username, $password)) {
+    $password = trim($password);
+    $hashedPassword = md5($password);
+    if (checkLogin($username, $hashedPassword)) {
         $id = sha1(uniqid());
-        $hashedPassword = md5($password);
         $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';
         $result = $conn->prepare($query);
-        $result->bind_param('ss', $id, $hashedPassword);
+        $result->bind_param('s', $id);
         $result->execute();
         $message['token'] = $id;
     } else {
         header('HTTP/1.1 404 Unauthorized');
-        $message['error'] = 'Invalid username/password';
+        $message = 'Invalid username or password';
     }
     return json_encode($message);
 }
@@ -70,12 +71,11 @@ function login($username, $password)
 function checkLogin($username, $password)
 {
     global $conn;
-    $hashedPassword = md5($password);
     $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE username=? AND password=? AND flag_id = 1)';
-    $result = $conn->prepare($query);
-    $result->bind_param("ss", $username, $hashedPassword);
-    $result->execute();
-    $result->store_result();
+    $statement = $conn->prepare($query);
+    $statement->bind_param("ss", $username, $password);
+    $statement->execute();
+    $result = $statement->get_result()->fetch_row()[0];
     if ($result == 1) {
         return true;
     } else {
@@ -92,10 +92,10 @@ function checkIfUserExists($username)
 {
     global $conn;
     $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE username=?)';
-    $result = $conn->prepare($query);
-    $result->bind_param('s', $username);
-    $result->execute();
-    $result->store_result();
+    $statement = $conn->prepare($query);
+    $statement->bind_param("s", $username);
+    $statement->execute();
+    $result = $statement->get_result()->fetch_row()[0];
     if ($result == 1) {
         return true;
     } else {
@@ -116,7 +116,7 @@ function register($username, $password, $firstname, $lastname, $image)
     global $conn;
     $message = array();
     $errors = '';
-    if (checkIfUserExists($username)) {
+    if (!checkIfUserExists($username)) {
         $errors .= 'Username already exists.';
     }
     if (strlen($username) < 3) {
@@ -131,14 +131,15 @@ function register($username, $password, $firstname, $lastname, $image)
     if (strlen($lastname) < 2) {
         $errors .= 'Last name must have at least 3 characters.';
     }
-    if ($errors === '') {
+    if ($errors == '') {
         $query = 'INSERT INTO ' . DB_TABLE_USERS . ' (username, password, firstname, lastname, flag_id, role_id, image) 
             VALUES (?, ?, ?, ?, ?, ?, ?)';
         $statement = $conn->prepare($query);
+        $password = trim($password);
         $hashedPassword = md5($password);
         $flag_id = 1;
         $role_id = 1;
-        $statement->bind_param('ssssii,s', $username, $hashedPassword, $firstname, $lastname, $flag_id, $role_id, $image);
+        $statement->bind_param('ssssiis', $username, $hashedPassword, $firstname, $lastname, $flag_id, $role_id, $image);
         if ($statement->execute()) {
             $id = sha1(uniqid());
             $query2 = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';
