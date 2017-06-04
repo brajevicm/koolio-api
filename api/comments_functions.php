@@ -20,11 +20,11 @@ function addComment($user_id, $post_id, $text)
     global $conn;
     $message = array();
     if (checkIfLoggedIn()) {
-        $query = 'INSERT INTO ' . DB_TABLE_COMMENTS . ' (user_id, post_id, text, flag, upvotes) VALUES (?, ?, ?, ?, ?)';
+        $query = 'INSERT INTO ' . DB_TABLE_COMMENTS . ' (user_id, post_id, text, flag_id, upvotes) VALUES (?, ?, ?, ?, ?)';
         $result = $conn->prepare($query);
         $flag = 1;
         $upvotes = 0;
-        $result->bind_param('iisi', $user_id, $post_id, $text, $flag, $upvotes);
+        $result->bind_param('iisii', $user_id, $post_id, $text, $flag, $upvotes);
         if ($result->execute()) {
             $message['success'] = 'You have successfully uploaded a comment.';
         } else {
@@ -47,7 +47,7 @@ function getUnfilteredComments()
     $message = array();
     $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, text, upvotes, timestamp, post_id, 
         (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.flag_id) AS flag, 
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user 
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as users 
         FROM ' . DB_TABLE_COMMENTS;
     $comments = array();
     if ($statement = $conn->prepare($query)) {
@@ -55,7 +55,7 @@ function getUnfilteredComments()
         $result = $statement->get_result();
         while ($row = $result->fetch_assoc()) {
             $comment = array();
-            $comment['user'] = $row['user'];
+            $comment['users'] = $row['users'];
             $comment['post_id'] = $row['post_id'];
             $comment['flag'] = $row['flag'];
             $comment['text'] = $row['text'];
@@ -72,24 +72,28 @@ function getUnfilteredComments()
  * Finished.
  * @return string
  */
-function getFilteredComments()
+function getFilteredComments($post_id)
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, user_id, post_id, flag_id text, upvotes, timestamp, post_id, 
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user,
-         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post
-        FROM ' . DB_TABLE_COMMENTS . ' WHERE flag_id = 1';
-    echo $query;
+    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, ' . DB_TABLE_COMMENTS . '.user_id, ' . DB_TABLE_COMMENTS . '.post_id, 
+        ' . DB_TABLE_COMMENTS . '.flag_id, ' . DB_TABLE_COMMENTS . '.text, ' . DB_TABLE_COMMENTS . '.timestamp, 
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as users,
+         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE comment_id = ' . DB_TABLE_COMMENTS . '.id) as upvotes
+        FROM ' . DB_TABLE_COMMENTS . '
+        JOIN ' . DB_TABLE_USERS . ' ON ' . DB_TABLE_COMMENTS . '.user_id = ' . DB_TABLE_USERS . '.id 
+        WHERE ' . DB_TABLE_COMMENTS . '.flag_id = 1 and ' . DB_TABLE_COMMENTS . '.post_id = ?';
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $post_id);
     $comments = array();
-    if ($statement = $conn->prepare($query)) {
-        $statement->execute();
+    if ($statement->execute()) {
         $result = $statement->get_result();
         while ($row = $result->fetch_assoc()) {
             $comment = array();
             $comment['id'] = $row['id'];
             $comment['user_id'] = $row['user_id'];
-            $comment['user'] = $row['user'];
+            $comment['users'] = $row['users'];
             $comment['post_id'] = $row['post_id'];
             $comment['post'] = $row['post'];
             $comment['flag_id'] = $row['flag_id'];
@@ -105,17 +109,39 @@ function getFilteredComments()
 
 /**
  * Finished
+ * @param $user_id
+ * @param $comment_id
+ * @return bool
+ */
+function checkIfUpvoted($user_id, $comment_id)
+{
+    global $conn;
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE user_id = ? AND post_id = ?)';
+    $result = $conn->prepare($query);
+    $result->bind_param('ii', $user_id, $comment_id);
+    $result->execute();
+    $result->store_result();
+    if ($result == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Finished
+ * @param $user_id
  * @param $comment_id
  * @return string
  */
-function upvoteComment($comment_id)
+function upvoteComment($user_id, $comment_id)
 {
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
-        $query = 'UPDATE ' . DB_TABLE_COMMENTS . ' SET upvotes = upvotes + 1 WHERE id = ?';
+    if (checkIfLoggedIn() && !checkIfUpvoted($user_id, $comment_id)) {
+        $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, comment_id) VALUES(?, ?)';
         $result = $conn->prepare($query);
-        $result->bind_param('i', $comment_id);
+        $result->bind_param('ii', $user_id, $comment_id);
         if ($result->execute()) {
             $message['success'] = 'You have successfully upvoted the comment.';
         } else {

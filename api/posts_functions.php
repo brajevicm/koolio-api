@@ -48,7 +48,7 @@ function getUnfilteredPosts()
     global $conn;
     $message = array();
     $query = 'SELECT ' . DB_TABLE_POSTS . '.id, user_id, flag_id, title, image, upvotes, timestamp, comments,  
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user 
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as users 
         FROM ' . DB_TABLE_POSTS;
     $posts = array();
     if ($statement = $conn->prepare($query)) {
@@ -58,7 +58,7 @@ function getUnfilteredPosts()
             $post = array();
             $post['id'] = $row['id'];
             $post['user_id'] = $row['user_id'];
-            $post['user'] = $row['user'];
+            $post['users'] = $row['users'];
             $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];
@@ -80,8 +80,12 @@ function getFilteredPosts()
 {
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, user_id, flag_id, title, image, upvotes, timestamp, comments,  
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user 
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id, 
+        ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image, 
+        ' . DB_TABLE_POSTS . '.timestamp,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as users,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes
         FROM ' . DB_TABLE_POSTS . ' WHERE flag_id = 1';
     $posts = array();
     if ($statement = $conn->prepare($query)) {
@@ -91,7 +95,7 @@ function getFilteredPosts()
             $post = array();
             $post['id'] = $row['id'];
             $post['user_id'] = $row['user_id'];
-            $post['user'] = $row['user'];
+            $post['users'] = $row['users'];
             $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];
@@ -102,7 +106,28 @@ function getFilteredPosts()
         }
     }
     $message['posts'] = $posts;
-    return json_encode($posts);
+    return json_encode($message);
+}
+
+/**
+ * Finished.
+ * @param $user_id
+ * @param $post_id
+ * @return bool
+ */
+function checkIfUpvoted($user_id, $post_id)
+{
+    global $conn;
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE user_id = ? AND post_id = ?)';
+    $result = $conn->prepare($query);
+    $result->bind_param('ii', $user_id, $post_id);
+    $result->execute();
+    $result->store_result();
+    if ($result == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -110,16 +135,16 @@ function getFilteredPosts()
  * @param $post_id
  * @return string
  */
-function upvotePost($post_id)
+function upvotePost($user_id, $post_id)
 {
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
-        $query = 'UPDATE ' . DB_TABLE_POSTS . ' SET upvotes = upvotes + 1 WHERE id=?';
+    if (checkIfLoggedIn() && !checkIfUpvoted($user_id, $post_id)) {
+        $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, post_id) VALUES(?, ?)';
         $result = $conn->prepare($query);
-        $result->bind_param('i', $post_id);
+        $result->bind_param('ii', $user_id, $post_id);
         if ($result->execute()) {
-            $message['success'] = 'You have successfully upvoted the post.';
+            $message['success'] = 'You have successfully upvoted the comment.';
         } else {
             $message['error'] = 'Database connection error.';
         }

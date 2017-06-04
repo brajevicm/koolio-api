@@ -12,7 +12,9 @@ define('DB_PASSWORD', 'pw');
 define('DB_HOST', 'localhost');
 define('DB_TABLE_USERS', 'users');
 define('DB_TABLE_COMMENTS', 'comments');
+define('DB_TABLE_UPVOTED_COMMENTS', 'upvoted_comments');
 define('DB_TABLE_POSTS', 'posts');
+define('DB_TABLE_UPVOTED_POSTS', 'upvoted_posts');
 define('DB_TABLE_FLAGS', 'flags');
 define('DB_TABLE_ROLES', 'roles');
 

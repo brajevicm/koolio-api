@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: brajevicm
- * Date: 31/05/17
- * Time: 11:52 PM
+ * Date: 4/06/17
+ * Time: 6:28 PM
  */
 
 header('Access-Control-Allow-Origin: *');
@@ -12,4 +12,8 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../comments_functions.php';
 
-echo getFilteredComments();
+if (isset($_POST['user_id']) && isset($_POST['comment_id'])) {
+    $user_id = $_POST['user_id'];
+    $comment_id = $_POST['comment_id'];
+    echo upvoteComment($user_id, $comment_id);
+}

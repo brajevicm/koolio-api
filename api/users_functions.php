@@ -86,7 +86,7 @@ function removeUser($user_id)
         $result = $conn->prepare($query);
         $result->bind_param('i', $user_id);
         if ($result->execute()) {
-            $message['success'] = 'You have successfully removed the user. ';
+            $message['success'] = 'You have successfully removed the users. ';
         } else {
             $message['error'] = 'Database connection error. ';
         }
