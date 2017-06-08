@@ -2,20 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aadf567e-1427-4742-b80b-cfbc747329d7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/comments/user.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/posts/upvoted.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/posts/user.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/comments/add.php" afterPath="$PROJECT_DIR$/api/comments/add.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/comments/get.php" afterPath="$PROJECT_DIR$/api/comments/get.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/comments/upvote.php" afterPath="$PROJECT_DIR$/api/comments/upvote.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/comments_functions.php" afterPath="$PROJECT_DIR$/api/comments_functions.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/posts/add.php" afterPath="$PROJECT_DIR$/api/posts/add.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/posts/get.php" afterPath="$PROJECT_DIR$/api/posts/get.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/posts/upvote.php" afterPath="$PROJECT_DIR$/api/posts/upvote.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/posts_functions.php" afterPath="$PROJECT_DIR$/api/posts_functions.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/shared_functions.php" afterPath="$PROJECT_DIR$/api/shared_functions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/users/get.php" afterPath="$PROJECT_DIR$/api/users/get.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/users_functions.php" afterPath="$PROJECT_DIR$/api/users_functions.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -60,11 +52,61 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="add.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="comments_functions.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/comments_functions.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="192" column="9" lean-forward="false" selection-start-line="192" selection-start-column="9" selection-end-line="192" selection-end-column="9" />
+              <folding>
+                <element signature="e#6#90#0#PHP" expanded="true" />
+                <marker date="1496929046427" expanded="true" signature="392:495" ph="INSERT INTO ${DB_TABLE_COMMENTS}... " />
+                <marker date="1496929046427" expanded="true" signature="1141:1148" ph="SELECT * FRO... ${DB_TABLE_COMMENTS}" />
+                <marker date="1496929046427" expanded="true" signature="6167:6264" ph="SELECT EXIST... " />
+                <marker date="1496929046427" expanded="true" signature="6182:6263" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+                <marker date="1496929046427" expanded="true" signature="6804:6816" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+                <marker date="1496929046427" expanded="true" signature="6804:6871" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+                <marker date="1496929046427" expanded="true" signature="6804:6884" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="posts_functions.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/posts_functions.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="236" column="49" lean-forward="true" selection-start-line="236" selection-start-column="8" selection-end-line="236" selection-end-column="49" />
+              <folding>
+                <element signature="e#6#90#0#PHP" expanded="true" />
+                <marker date="1496922831145" expanded="true" signature="387:508" ph="INSERT INTO ${DB_TABLE_POSTS}... " />
+                <marker date="1496922831145" expanded="true" signature="7869:7989" ph="SELECT EXIST... " />
+                <marker date="1496922831145" expanded="true" signature="7869:8033" ph="SELECT EXIST... " />
+                <marker date="1496922831145" expanded="true" signature="7884:7928" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+                <marker date="1496922831145" expanded="true" signature="7884:7942" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+                <marker date="1496922831145" expanded="true" signature="7884:7943" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+                <marker date="1496922831145" expanded="true" signature="7884:7985" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+                <marker date="1496922831145" expanded="true" signature="7884:7989" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+                <marker date="1496922831145" expanded="true" signature="8594:8669" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="add.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/comments/add.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="312">
               <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="add.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/posts/add.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="37" column="1" lean-forward="true" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -91,6 +133,8 @@
       <find>login</find>
       <find>addc</find>
       <find>asdsadasdadad</find>
+      <find>checkif</find>
+      <find>checkifu</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -118,19 +162,20 @@
         <option value="$PROJECT_DIR$/api/comments/remove.php" />
         <option value="$PROJECT_DIR$/api/posts/remove.php" />
         <option value="$PROJECT_DIR$/api/comments/get.php" />
-        <option value="$PROJECT_DIR$/api/posts/upvote.php" />
         <option value="$PROJECT_DIR$/api/users/get.php" />
         <option value="$PROJECT_DIR$/api/users/login.php" />
         <option value="$PROJECT_DIR$/api/posts/upvoted.php" />
         <option value="$PROJECT_DIR$/api/posts/user.php" />
         <option value="$PROJECT_DIR$/api/comments/user.php" />
-        <option value="$PROJECT_DIR$/api/shared_functions.php" />
         <option value="$PROJECT_DIR$/api/users_functions.php" />
-        <option value="$PROJECT_DIR$/api/posts_functions.php" />
-        <option value="$PROJECT_DIR$/api/comments_functions.php" />
         <option value="$PROJECT_DIR$/api/comments/add.php" />
         <option value="$PROJECT_DIR$/api/comments/upvote.php" />
+        <option value="$PROJECT_DIR$/api/shared_functions.php" />
+        <option value="$PROJECT_DIR$/api/posts/upvote.php" />
+        <option value="$PROJECT_DIR$/api/posts/get.php" />
+        <option value="$PROJECT_DIR$/api/posts_functions.php" />
         <option value="$PROJECT_DIR$/api/posts/add.php" />
+        <option value="$PROJECT_DIR$/api/comments_functions.php" />
       </list>
     </option>
   </component>
@@ -190,24 +235,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="koolio-api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="koolio-api" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="users" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -375,15 +402,15 @@
       <workItem from="1496336632102" duration="34587000" />
       <workItem from="1496604504262" duration="5912000" />
       <workItem from="1496668112407" duration="7800000" />
-      <workItem from="1496828186715" duration="15627000" />
+      <workItem from="1496828186715" duration="26975000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79157000" />
+    <option name="totallyTimeSpent" value="90505000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1366" height="741" extended-state="6" />
+    <frame x="0" y="27" width="1366" height="741" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22112462" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -585,50 +612,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/shared_functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="15" column="12" lean-forward="false" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-          <folding>
-            <marker date="1496881505505" expanded="true" signature="341:348" ph="SELECT EXIST... " />
-            <marker date="1496881505505" expanded="true" signature="341:355" ph="SELECT id FR... " />
-            <marker date="1496881505505" expanded="true" signature="341:394" ph="SELECT id FR... token" />
-            <marker date="1496881505505" expanded="true" signature="341:395" ph="SELECT id FR... " />
-            <marker date="1496881505505" expanded="true" signature="863:945" ph="SELECT EXIST... " />
-            <marker date="1496881505505" expanded="true" signature="878:928" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881505505" expanded="true" signature="878:944" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881505505" expanded="true" signature="2094:2194" ph="SELECT EXIST... " />
-            <marker date="1496881505505" expanded="true" signature="2109:2162" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881505505" expanded="true" signature="2109:2193" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881505505" expanded="true" signature="2594:2663" ph="SELECT EXIST... " />
-            <marker date="1496881505505" expanded="true" signature="2609:2662" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881505505" expanded="true" signature="3728:3871" ph="INSERT INTO ${DB_TABLE_USERS}... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/users_functions.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2181">
           <caret line="114" column="28" lean-forward="true" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/comments_functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="23" column="33" lean-forward="true" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="true" />
-            <marker date="1496881735522" expanded="true" signature="392:495" ph="INSERT INTO ${DB_TABLE_COMMENTS}... " />
-            <marker date="1496881735522" expanded="true" signature="1141:1148" ph="SELECT * FRO... ${DB_TABLE_COMMENTS}" />
-            <marker date="1496881735522" expanded="true" signature="6167:6264" ph="SELECT EXIST... " />
-            <marker date="1496881735522" expanded="true" signature="6182:6263" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
-            <marker date="1496881735522" expanded="true" signature="6791:6803" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
-            <marker date="1496881735522" expanded="true" signature="6791:6858" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
-            <marker date="1496881735522" expanded="true" signature="6791:6871" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -656,30 +644,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/posts/add.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="9" column="42" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/comments/upvote.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/posts/get.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="12" column="33" lean-forward="false" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/comments/get.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -698,36 +662,63 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/posts/upvoted.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+        <state relative-caret-position="234">
+          <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="32" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/shared_functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-312">
+          <caret line="49" column="40" lean-forward="true" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
+          <folding>
+            <marker date="1496915954416" expanded="true" signature="337:344" ph="SELECT EXIST... " />
+            <marker date="1496915954416" expanded="true" signature="337:351" ph="SELECT id FR... " />
+            <marker date="1496915954416" expanded="true" signature="337:390" ph="SELECT id FR... token" />
+            <marker date="1496915954416" expanded="true" signature="337:391" ph="SELECT id FR... " />
+            <marker date="1496915954416" expanded="true" signature="859:941" ph="SELECT EXIST... " />
+            <marker date="1496915954416" expanded="true" signature="874:924" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496915954416" expanded="true" signature="874:940" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496915954416" expanded="true" signature="2100:2200" ph="SELECT EXIST... " />
+            <marker date="1496915954416" expanded="true" signature="2115:2168" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496915954416" expanded="true" signature="2115:2199" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496915954416" expanded="true" signature="2600:2669" ph="SELECT EXIST... " />
+            <marker date="1496915954416" expanded="true" signature="2615:2668" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496915954416" expanded="true" signature="3734:3877" ph="INSERT INTO ${DB_TABLE_USERS}... " />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/posts/upvote.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        <state relative-caret-position="312">
+          <caret line="17" column="21" lean-forward="false" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/posts_functions.php">
+    <entry file="file://$PROJECT_DIR$/api/posts/get.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-598">
-          <caret line="199" column="1" lean-forward="true" selection-start-line="199" selection-start-column="1" selection-end-line="199" selection-end-column="1" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="true" />
-            <marker date="1496881687161" expanded="true" signature="355:476" ph="INSERT INTO ${DB_TABLE_POSTS}... " />
-            <marker date="1496881687161" expanded="true" signature="7286:7406" ph="SELECT EXIST... " />
-            <marker date="1496881687161" expanded="true" signature="7286:7450" ph="SELECT EXIST... " />
-            <marker date="1496881687161" expanded="true" signature="7301:7345" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
-            <marker date="1496881687161" expanded="true" signature="7301:7359" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
-            <marker date="1496881687161" expanded="true" signature="7301:7360" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
-            <marker date="1496881687161" expanded="true" signature="7301:7402" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
-            <marker date="1496881687161" expanded="true" signature="7301:7406" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
-            <marker date="1496881687161" expanded="true" signature="7959:8036" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
-          </folding>
+        <state relative-caret-position="286">
+          <caret line="16" column="12" lean-forward="false" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/comments/upvote.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/posts/add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="37" column="1" lean-forward="true" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -736,6 +727,42 @@
         <state relative-caret-position="312">
           <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/posts_functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="236" column="49" lean-forward="true" selection-start-line="236" selection-start-column="8" selection-end-line="236" selection-end-column="49" />
+          <folding>
+            <element signature="e#6#90#0#PHP" expanded="true" />
+            <marker date="1496922831145" expanded="true" signature="387:508" ph="INSERT INTO ${DB_TABLE_POSTS}... " />
+            <marker date="1496922831145" expanded="true" signature="7869:7989" ph="SELECT EXIST... " />
+            <marker date="1496922831145" expanded="true" signature="7869:8033" ph="SELECT EXIST... " />
+            <marker date="1496922831145" expanded="true" signature="7884:7928" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+            <marker date="1496922831145" expanded="true" signature="7884:7942" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+            <marker date="1496922831145" expanded="true" signature="7884:7943" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+            <marker date="1496922831145" expanded="true" signature="7884:7985" ph="SELECT * FRO... ${DB_TABLE_USERS}" />
+            <marker date="1496922831145" expanded="true" signature="7884:7989" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+            <marker date="1496922831145" expanded="true" signature="8594:8669" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/comments_functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="192" column="9" lean-forward="false" selection-start-line="192" selection-start-column="9" selection-end-line="192" selection-end-column="9" />
+          <folding>
+            <element signature="e#6#90#0#PHP" expanded="true" />
+            <marker date="1496929046427" expanded="true" signature="392:495" ph="INSERT INTO ${DB_TABLE_COMMENTS}... " />
+            <marker date="1496929046427" expanded="true" signature="1141:1148" ph="SELECT * FRO... ${DB_TABLE_COMMENTS}" />
+            <marker date="1496929046427" expanded="true" signature="6167:6264" ph="SELECT EXIST... " />
+            <marker date="1496929046427" expanded="true" signature="6182:6263" ph="SELECT * FRO... ${DB_TABLE_UPVOTED_POSTS}" />
+            <marker date="1496929046427" expanded="true" signature="6804:6816" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+            <marker date="1496929046427" expanded="true" signature="6804:6871" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+            <marker date="1496929046427" expanded="true" signature="6804:6884" ph="INSERT INTO ${DB_TABLE_UPVOTED_COMMENTS}... " />
+          </folding>
         </state>
       </provider>
     </entry>

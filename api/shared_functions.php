@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 /**
- * Finished.
+ * Finis
  * @param $token
  * @return array
  */
@@ -47,7 +47,7 @@ function checkIfLoggedIn()
         $result = $conn->prepare($query);
         $result->bind_param('s', $token);
         $result->execute();
-        $result->store_result();
+        $result = $result->store_result();
         if ($result == 1) {
             return true;
         } else {

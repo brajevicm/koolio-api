@@ -181,7 +181,8 @@ function upvoteComment($token, $comment_id)
     $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    if (checkIfLoggedIn() && !checkIfUpvoted($user_id, $comment_id)) {
+    if (checkIfLoggedIn()) {
+//        if (checkIfUpvoted($user_id, $comment_id)) {
         $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, comment_id) VALUES(?, ?)';
         $result = $conn->prepare($query);
         $result->bind_param('ii', $user_id, $comment_id);
@@ -190,6 +191,9 @@ function upvoteComment($token, $comment_id)
         } else {
             $message['error'] = 'Database connection error.';
         }
+//        } else {
+//            $message['error'] = 'You have already upvoted.';
+//        }
     } else {
         $message['error'] = 'Please log in.';
         header('HTTP/1.1 401 Unathorized');

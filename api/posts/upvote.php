@@ -12,8 +12,8 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../posts_functions.php';
 
-if (isset($_POST['user_id']) && isset($_POST['post_id'])) {
-    $user_id = $_POST['user_id'];
+if (isset($_SERVER['HTTP_TOKEN']) && isset($_POST['post_id'])) {
+    $token = $_SERVER['HTTP_TOKEN'];
     $post_id = $_POST['post_id'];
-    echo upvotePost($user_id, $post_id);
+    echo upvotePost($token, $post_id);
 }

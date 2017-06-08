@@ -15,8 +15,9 @@ include_once 'shared_functions.php';
  * @param $image
  * @return string
  */
-function addPost($user_id, $title, $image)
+function addPost($token, $title, $image)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
     if (checkIfLoggedIn()) {
@@ -43,16 +44,24 @@ function addPost($user_id, $title, $image)
  * Finished
  * @return string
  */
-function getUnfilteredPosts()
+function getFilteredPostsForUser($token)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, user_id, flag_id, title, image, upvotes, timestamp, comments,  
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as users 
-        FROM ' . DB_TABLE_POSTS;
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id, 
+        ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image, 
+        ' . DB_TABLE_POSTS . '.timestamp,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes,
+         (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE ' . DB_TABLE_UPVOTED_POSTS . '.user_id = ?) as upvoted
+        FROM ' . DB_TABLE_POSTS . ' WHERE flag_id = 1';
+    echo $query;
     $posts = array();
-    if ($statement = $conn->prepare($query)) {
-        $statement->execute();
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $user_id);
+    if ($statement->execute()) {
         $result = $statement->get_result();
         while ($row = $result->fetch_assoc()) {
             $post = array();
@@ -196,9 +205,8 @@ function getUpvotedPosts($token)
  * @param $post_id
  * @return bool
  */
-function checkIfUpvoted($token, $post_id)
+function checkIfUpvoted($user_id, $post_id)
 {
-    $user_id = tokenToId($token);
     global $conn;
     $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . '
         WHERE ' . DB_TABLE_UPVOTED_POSTS . '.user_id = ? AND ' . DB_TABLE_UPVOTED_POSTS . '.post_id = ?)';
@@ -221,17 +229,22 @@ function checkIfUpvoted($token, $post_id)
  */
 function upvotePost($token, $post_id)
 {
-    $user_id = tokenToId($token);
+    $user_id = (int)tokenToId($token);
+    $post_id = (int)$post_id;
     global $conn;
     $message = array();
-    if (checkIfLoggedIn() && !checkIfUpvoted($token, $post_id)) {
-        $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, post_id) VALUES(?, ?)';
-        $result = $conn->prepare($query);
-        $result->bind_param('ii', $user_id, $post_id);
-        if ($result->execute()) {
-            $message['success'] = 'You have successfully upvoted the comment.';
+    if (checkIfLoggedIn()) {
+        if (checkIfUpvoted($user_id, $post_id)) {
+            $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_POSTS . ' (user_id, post_id) VALUES (?, ?)';
+            $result = $conn->prepare($query);
+            $result->bind_param('ii', $user_id, $post_id);
+            if ($result->execute()) {
+                $message['success'] = 'You have successfully upvoted the post.';
+            } else {
+                $message['error'] = 'Database connection error.';
+            }
         } else {
-            $message['error'] = 'Database connection error.';
+            $message['error'] = 'You have already upvoted.';
         }
     } else {
         $message['error'] = 'Please log in.';
