@@ -73,6 +73,41 @@ function getFilteredUsers()
     return json_encode($message);
 }
 
+function getUser($token)
+{
+    $token = str_replace('"', "", $token);
+    $id = tokenToId($token);
+    global $conn;
+    $message = array();
+    $query = 'SELECT ' . DB_TABLE_USERS . '.id, username, firstname, lastname, image, 
+        flag_id, role_id, token, password, 
+        (SELECT name FROM ' . DB_TABLE_FLAGS . ' WHERE id = ' . DB_TABLE_USERS . '.flag_id) AS flag, 
+        (SELECT name FROM ' . DB_TABLE_ROLES . ' WHERE id = ' . DB_TABLE_USERS . '.role_id) AS role 
+        FROM ' . DB_TABLE_USERS . ' WHERE flag_id = 1 AND id = ?';
+    $user = array();
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $id);
+    if ($statement->execute()) {
+        $result = $statement->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $user['id'] = $row['id'];
+            $user['role_id'] = $row['role_id'];
+            $user['role'] = $row['role'];
+            $user['flag_id'] = $row['flag_id'];
+            $user['flag'] = $row['flag'];
+            $user['username'] = $row['username'];
+            $user['password'] = $row['password'];
+            $user['firstname'] = $row['firstname'];
+            $user['lastname'] = $row['lastname'];
+            $user['image'] = $row['image'];
+            $user['token'] = $row['token'];
+//            array_push($users, $user);
+        }
+    }
+//    $message['user'] = $user;
+    return json_encode($user);
+}
+
 /**
  * @param $user_id
  * @return string

@@ -83,7 +83,7 @@ function getFilteredPosts()
     $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id, 
         ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image, 
         ' . DB_TABLE_POSTS . '.timestamp,  
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as users,
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user,
          (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
          (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes
         FROM ' . DB_TABLE_POSTS . ' WHERE flag_id = 1';
@@ -95,7 +95,88 @@ function getFilteredPosts()
             $post = array();
             $post['id'] = $row['id'];
             $post['user_id'] = $row['user_id'];
-            $post['users'] = $row['users'];
+            $post['user'] = $row['user'];
+            $post['flag_id'] = $row['flag_id'];
+            $post['title'] = $row['title'];
+            $post['image'] = $row['image'];
+            $post['timestamp'] = $row['timestamp'];
+            $post['upvotes'] = $row['upvotes'];
+            $post['comments'] = $row['comments'];
+            array_push($posts, $post);
+        }
+    }
+    $message['posts'] = $posts;
+    return json_encode($message);
+}
+
+function getPostsFromUser($token)
+{
+    $token = str_replace('"', "", $token);
+    global $conn;
+    $user_id = tokenToId($token);
+    $message = array();
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id, 
+        ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image, 
+        ' . DB_TABLE_POSTS . '.timestamp,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user,
+        (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
+        (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes
+        FROM ' . DB_TABLE_POSTS . '
+        JOIN ' . DB_TABLE_USERS . ' ON ' . DB_TABLE_POSTS . '.user_id = ' . DB_TABLE_USERS . '.id
+        WHERE ' . DB_TABLE_USERS . '.id = ?';
+    $posts = array();
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $user_id);
+    if ($statement->execute()) {
+        $result = $statement->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $post = array();
+            $post['id'] = $row['id'];
+            $post['user_id'] = $row['user_id'];
+            $post['user'] = $row['user'];
+            $post['flag_id'] = $row['flag_id'];
+            $post['title'] = $row['title'];
+            $post['image'] = $row['image'];
+            $post['timestamp'] = $row['timestamp'];
+            $post['upvotes'] = $row['upvotes'];
+            $post['comments'] = $row['comments'];
+            array_push($posts, $post);
+        }
+    }
+    $message['posts'] = $posts;
+    return json_encode($message);
+}
+
+/**
+ * Finished.
+ * @param $user_id
+ * @return string
+ */
+function getUpvotedPosts($token)
+{
+    $token = str_replace('"', "", $token);
+    global $conn;
+    $user_id = tokenToId($token);
+    $message = array();
+    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id, 
+        ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image, 
+        ' . DB_TABLE_POSTS . '.timestamp,  
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user,
+        (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
+        (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes
+        FROM ' . DB_TABLE_POSTS . '
+        JOIN ' . DB_TABLE_UPVOTED_POSTS . ' ON ' . DB_TABLE_POSTS . '.id = ' . DB_TABLE_UPVOTED_POSTS . '.post_id
+        WHERE ' . DB_TABLE_UPVOTED_POSTS . '.user_id = ?';
+    $posts = array();
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $user_id);
+    if ($statement->execute()) {
+        $result = $statement->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $post = array();
+            $post['id'] = $row['id'];
+            $post['user_id'] = $row['user_id'];
+            $post['user'] = $row['user'];
             $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];
@@ -115,10 +196,12 @@ function getFilteredPosts()
  * @param $post_id
  * @return bool
  */
-function checkIfUpvoted($user_id, $post_id)
+function checkIfUpvoted($token, $post_id)
 {
+    $user_id = tokenToId($token);
     global $conn;
-    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE user_id = ? AND post_id = ?)';
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . '
+        WHERE ' . DB_TABLE_UPVOTED_POSTS . '.user_id = ? AND ' . DB_TABLE_UPVOTED_POSTS . '.post_id = ?)';
     $result = $conn->prepare($query);
     $result->bind_param('ii', $user_id, $post_id);
     $result->execute();
@@ -131,15 +214,17 @@ function checkIfUpvoted($user_id, $post_id)
 }
 
 /**
- * Finished
+ * Finished.
+ * @param $token
  * @param $post_id
  * @return string
  */
-function upvotePost($user_id, $post_id)
+function upvotePost($token, $post_id)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    if (checkIfLoggedIn() && !checkIfUpvoted($user_id, $post_id)) {
+    if (checkIfLoggedIn() && !checkIfUpvoted($token, $post_id)) {
         $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, post_id) VALUES(?, ?)';
         $result = $conn->prepare($query);
         $result->bind_param('ii', $user_id, $post_id);

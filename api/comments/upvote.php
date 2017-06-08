@@ -7,13 +7,13 @@
  */
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Token, token, TOKEN');
 
 require '../comments_functions.php';
 
-if (isset($_POST['user_id']) && isset($_POST['comment_id'])) {
-    $user_id = $_POST['user_id'];
+if (isset($_SERVER['HTTP_TOKEN']) && isset($_POST['comment_id'])) {
+    $token = $_SERVER['HTTP_TOKEN'];
     $comment_id = $_POST['comment_id'];
-    echo upvoteComment($user_id, $comment_id);
+    echo upvoteComment($token, $comment_id);
 }

@@ -15,8 +15,9 @@ include_once 'shared_functions.php';
  * @param $text
  * @return string
  */
-function addComment($user_id, $post_id, $text)
+function addComment($token, $post_id, $text)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
     if (checkIfLoggedIn()) {
@@ -78,7 +79,8 @@ function getFilteredComments($post_id)
     $message = array();
     $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, ' . DB_TABLE_COMMENTS . '.user_id, ' . DB_TABLE_COMMENTS . '.post_id, 
         ' . DB_TABLE_COMMENTS . '.flag_id, ' . DB_TABLE_COMMENTS . '.text, ' . DB_TABLE_COMMENTS . '.timestamp, 
-        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as users,
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user,
+        (SELECT image FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as avatar,
          (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post,
          (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE comment_id = ' . DB_TABLE_COMMENTS . '.id) as upvotes
         FROM ' . DB_TABLE_COMMENTS . '
@@ -93,7 +95,47 @@ function getFilteredComments($post_id)
             $comment = array();
             $comment['id'] = $row['id'];
             $comment['user_id'] = $row['user_id'];
-            $comment['users'] = $row['users'];
+            $comment['user'] = $row['user'];
+            $comment['avatar'] = $row['avatar'];
+            $comment['post_id'] = $row['post_id'];
+            $comment['post'] = $row['post'];
+            $comment['flag_id'] = $row['flag_id'];
+            $comment['text'] = $row['text'];
+            $comment['upvotes'] = $row['upvotes'];
+            $comment['timestamp'] = $row['timestamp'];
+            array_push($comments, $comment);
+        }
+    }
+    $message['comments'] = $comments;
+    return json_encode($message);
+}
+
+function getCommentsFromUser($token)
+{
+    $token = str_replace('"', "", $token);
+    global $conn;
+    $user_id = tokenToId($token);
+    $message = array();
+    $query = 'SELECT ' . DB_TABLE_COMMENTS . '.id, ' . DB_TABLE_COMMENTS . '.user_id, ' . DB_TABLE_COMMENTS . '.post_id, 
+        ' . DB_TABLE_COMMENTS . '.flag_id, ' . DB_TABLE_COMMENTS . '.text, ' . DB_TABLE_COMMENTS . '.timestamp, 
+        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user,
+        (SELECT image FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as avatar,
+         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post,
+         (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE comment_id = ' . DB_TABLE_COMMENTS . '.id) as upvotes
+        FROM ' . DB_TABLE_COMMENTS . '
+        JOIN ' . DB_TABLE_USERS . ' ON ' . DB_TABLE_COMMENTS . '.user_id = ' . DB_TABLE_USERS . '.id 
+        WHERE ' . DB_TABLE_COMMENTS . '.flag_id = 1 and ' . DB_TABLE_COMMENTS . '.user_id = ?';
+    $statement = $conn->prepare($query);
+    $statement->bind_param('i', $user_id);
+    $comments = array();
+    if ($statement->execute()) {
+        $result = $statement->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $comment = array();
+            $comment['id'] = $row['id'];
+            $comment['user_id'] = $row['user_id'];
+            $comment['user'] = $row['user'];
+            $comment['avatar'] = $row['avatar'];
             $comment['post_id'] = $row['post_id'];
             $comment['post'] = $row['post'];
             $comment['flag_id'] = $row['flag_id'];
@@ -134,8 +176,9 @@ function checkIfUpvoted($user_id, $comment_id)
  * @param $comment_id
  * @return string
  */
-function upvoteComment($user_id, $comment_id)
+function upvoteComment($token, $comment_id)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
     if (checkIfLoggedIn() && !checkIfUpvoted($user_id, $comment_id)) {

@@ -13,6 +13,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 /**
+ * Finished.
+ * @param $token
+ * @return array
+ */
+function tokenToId($token)
+{
+    $token = str_replace('"', "", $token);
+    global $conn;
+    $query = 'SELECT id FROM ' . DB_TABLE_USERS . ' WHERE token = ?';
+    $result = $conn->prepare($query);
+    $result->bind_param('s', $token);
+    $id = array();
+    if ($result->execute()) {
+        $result = $result->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $id = $row['id'];
+        }
+        return $id;
+    }
+}
+
+/**
  * Finished
  * @return bool
  */
@@ -50,9 +72,9 @@ function login($username, $password)
     $hashedPassword = md5($password);
     if (checkLogin($username, $hashedPassword)) {
         $id = sha1(uniqid());
-        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token=? WHERE username=?';
+        $query = 'UPDATE ' . DB_TABLE_USERS . ' SET token = ? WHERE username = ?';
         $result = $conn->prepare($query);
-        $result->bind_param('s', $id);
+        $result->bind_param('ss', $id, $username);
         $result->execute();
         $message['token'] = $id;
     } else {
