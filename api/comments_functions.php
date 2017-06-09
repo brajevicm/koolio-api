@@ -20,7 +20,7 @@ function addComment($token, $post_id, $text)
     $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
+    if (checkIfLoggedIn($token)) {
         $query = 'INSERT INTO ' . DB_TABLE_COMMENTS . ' (user_id, post_id, text, flag_id, upvotes) VALUES (?, ?, ?, ?, ?)';
         $result = $conn->prepare($query);
         $flag = 1;
@@ -158,11 +158,11 @@ function getCommentsFromUser($token)
 function checkIfUpvoted($user_id, $comment_id)
 {
     global $conn;
-    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE user_id = ? AND post_id = ?)';
-    $result = $conn->prepare($query);
-    $result->bind_param('ii', $user_id, $comment_id);
-    $result->execute();
-    $result->store_result();
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE user_id = ? AND comment_id = ?)';
+    $statement = $conn->prepare($query);
+    $statement->bind_param('ii', $user_id, $comment_id);
+    $statement->execute();
+    $result = $statement->get_result()->fetch_row()[0];
     if ($result == 1) {
         return true;
     } else {
@@ -181,19 +181,19 @@ function upvoteComment($token, $comment_id)
     $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
-//        if (checkIfUpvoted($user_id, $comment_id)) {
-        $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, comment_id) VALUES(?, ?)';
-        $result = $conn->prepare($query);
-        $result->bind_param('ii', $user_id, $comment_id);
-        if ($result->execute()) {
-            $message['success'] = 'You have successfully upvoted the comment.';
+    if (checkIfLoggedIn($token)) {
+        if (checkIfUpvoted($user_id, $comment_id)) {
+            $query = 'INSERT INTO ' . DB_TABLE_UPVOTED_COMMENTS . ' (user_id, comment_id) VALUES(?, ?)';
+            $result = $conn->prepare($query);
+            $result->bind_param('ii', $user_id, $comment_id);
+            if ($result->execute()) {
+                $message['success'] = 'You have successfully upvoted the comment.';
+            } else {
+                $message['error'] = 'Database connection error.';
+            }
         } else {
-            $message['error'] = 'Database connection error.';
+            $message['error'] = 'You have already upvoted.';
         }
-//        } else {
-//            $message['error'] = 'You have already upvoted.';
-//        }
     } else {
         $message['error'] = 'Please log in.';
         header('HTTP/1.1 401 Unathorized');
@@ -206,11 +206,11 @@ function upvoteComment($token, $comment_id)
  * @param $comment_id
  * @return string
  */
-function downvoteComment($comment_id)
+function downvoteComment($token, $comment_id)
 {
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
+    if (checkIfLoggedIn($token)) {
         $query = 'UPDATE ' . DB_TABLE_COMMENTS . ' SET upvotes = upvotes - 1 WHERE id = ?';
         $result = $conn->prepare($query);
         $result->bind_param('i', $comment_id);

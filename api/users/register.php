@@ -13,8 +13,8 @@ header('Content-Type: application/x-www-form-urlencoded');
 
 require '../users_functions.php';
 
-if (isset($_POST['username']) || isset($_POST['password']) || isset($_POST['firstname'])
-    || isset($_POST['lastname']) || isset($_POST['image'])
+if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['firstname'])
+    && isset($_POST['lastname']) && isset($_POST['image'])
 ) {
     $username = $_POST['username'];
     $password = $_POST['password'];

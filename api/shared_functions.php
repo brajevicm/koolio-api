@@ -38,21 +38,17 @@ function tokenToId($token)
  * Finished
  * @return bool
  */
-function checkIfLoggedIn()
+function checkIfLoggedIn($token)
 {
+    $token = str_replace('"', "", $token);
     global $conn;
-    if (isset($_SERVER['HTTP_TOKEN'])) {
-        $token = $_SERVER['HTTP_TOKEN'];
-        $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE token=? AND flag_id = 1)';
-        $result = $conn->prepare($query);
-        $result->bind_param('s', $token);
-        $result->execute();
-        $result = $result->store_result();
-        if ($result == 1) {
-            return true;
-        } else {
-            return false;
-        }
+    $query = 'SELECT EXISTS (SELECT * FROM ' . DB_TABLE_USERS . ' WHERE token=?)';
+    $statement = $conn->prepare($query);
+    $statement->bind_param('s', $token);
+    $statement->execute();
+    $result = $statement->get_result()->fetch_row()[0];
+    if ($result == 1) {
+        return true;
     } else {
         return false;
     }

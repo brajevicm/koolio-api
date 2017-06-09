@@ -12,6 +12,9 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../comments_functions.php';
 
+
+echo checkIfUpvoted($_POST['user_id'], $_POST['comment_id']);
+
 if (isset($_SERVER['HTTP_TOKEN']) && isset($_POST['comment_id'])) {
     $token = $_SERVER['HTTP_TOKEN'];
     $comment_id = $_POST['comment_id'];

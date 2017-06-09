@@ -13,7 +13,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 require '../posts_functions.php';
 
 if (isset($_SERVER['HTTP_TOKEN'])) {
-    $token = $_POST['HTTP_TOKEN'];
+    $token = $_SERVER['HTTP_TOKEN'];
     echo getFilteredPostsForUser($token);
 } else {
     echo getFilteredPosts();
