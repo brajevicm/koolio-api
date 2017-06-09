@@ -134,7 +134,7 @@ function register($username, $password, $firstname, $lastname, $image)
     global $conn;
     $message = array();
     $errors = '';
-    if (!checkIfUserExists($username)) {
+    if (checkIfUserExists($username)) {
         $errors .= 'Username already exists.';
     }
     if (strlen($username) < 3) {

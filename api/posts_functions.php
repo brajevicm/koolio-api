@@ -21,13 +21,11 @@ function addPost($token, $title, $image)
     global $conn;
     $message = array();
     if (checkIfLoggedIn($token)) {
-        $query = 'INSERT INTO ' . DB_TABLE_POSTS . ' (user_id, title, image, upvotes, comments, flag_id) 
-        VALUES (?, ?, ?, ?, ?, ?)';
+        $query = 'INSERT INTO ' . DB_TABLE_POSTS . ' (user_id, title, image, flag_id) 
+        VALUES (?, ?, ?, ?)';
         $result = $conn->prepare($query);
-        $upvotes = 0;
-        $comments = 0;
         $flag = 1;
-        $result->bind_param('issiii', $user_id, $title, $image, $upvotes, $comments, $flag);
+        $result->bind_param('issi', $user_id, $title, $image, $flag);
         if ($result->execute()) {
             $message['success'] = 'You have successfully uploaded a post.';
         } else {
@@ -55,14 +53,6 @@ function getFilteredPostsForUser($token)
         (SELECT COUNT(*) FROM upvoted_posts WHERE post_id = pt1 . id) AS upvotes,
         (SELECT EXISTS(SELECT * FROM upvoted_posts WHERE upvoted_posts . post_id = pt1.id AND upvoted_posts.user_id = ?)) AS upvoted
         FROM posts AS pt1';
-//    $query = 'SELECT ' . DB_TABLE_POSTS . '.id, ' . DB_TABLE_POSTS . '.user_id,
-//        ' . DB_TABLE_POSTS . '.flag_id, ' . DB_TABLE_POSTS . '.title, ' . DB_TABLE_POSTS . '.image,
-//        ' . DB_TABLE_POSTS . '.timestamp,
-//        (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_POSTS . '.user_id) as user,
-//         (SELECT COUNT(*) FROM ' . DB_TABLE_COMMENTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as comments,
-//         (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE post_id = ' . DB_TABLE_POSTS . '.id) as upvotes,
-//         (SELECT * FROM ' . DB_TABLE_UPVOTED_POSTS . ' WHERE ' . DB_TABLE_UPVOTED_POSTS . '.user_id = ?) as upvoted
-//        FROM ' . DB_TABLE_POSTS . ' WHERE flag_id = 1';
     $posts = array();
     $statement = $conn->prepare($query);
     $statement->bind_param('i', $user_id);
