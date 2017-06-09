@@ -13,22 +13,16 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 require '../posts_functions.php';
 
 $path = 'uploads/';
+$fullPath = 'http://127.0.0.1:80/koolio-api/api/posts/uploads/';
 
 if (isset($_FILES['file']) && isset($_SERVER['HTTP_TOKEN']) && isset($_POST['title'])) {
+    $token = $_SERVER['HTTP_TOKEN'];
+    $title = $_POST['title'];
     $originalName = $_FILES['file']['name'];
     $ext = '.' . pathinfo($originalName, PATHINFO_EXTENSION);
     $generatedName = md5($_FILES['file']['tmp_name']) . $ext;
     $filePath = $path . $generatedName;
-
-    $token = $_SERVER['HTTP_TOKEN'];
-    $title = $_POST['title'];
-    $image = $filePath;
-
-    echo $token;
-    echo $title;
-    echo $image;
-
-    addPost($token, $title, $image);
+    $fullPath = $fullPath . $generatedName;
 
     if (!is_writable($path)) {
         echo json_encode(array(
@@ -39,6 +33,7 @@ if (isset($_FILES['file']) && isset($_SERVER['HTTP_TOKEN']) && isset($_POST['tit
     }
 
     if (move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
+        addPost($token, $title, $fullPath);
         echo json_encode(array(
             'status' => true,
             'originalName' => $originalName,
