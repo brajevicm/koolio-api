@@ -305,7 +305,7 @@ function getFilteredCommentsForUser($token, $post_id)
  * @param $comment_id
  * @return string
  */
-function reportPost($token, $comment_id)
+function reportComment($token, $comment_id)
 {
     $user_id = (int)tokenToId($token);
     global $conn;
