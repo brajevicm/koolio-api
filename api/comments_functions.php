@@ -9,8 +9,8 @@
 include_once 'shared_functions.php';
 
 /**
- * Finished
- * @param $user_id
+ * Finished.
+ * @param $token
  * @param $post_id
  * @param $text
  * @return string
@@ -71,6 +71,7 @@ function getUnfilteredComments()
 
 /**
  * Finished.
+ * @param $post_id
  * @return string
  */
 function getFilteredComments($post_id)
@@ -86,7 +87,6 @@ function getFilteredComments($post_id)
         FROM ' . DB_TABLE_COMMENTS . '
         JOIN ' . DB_TABLE_USERS . ' ON ' . DB_TABLE_COMMENTS . '.user_id = ' . DB_TABLE_USERS . '.id 
         WHERE ' . DB_TABLE_COMMENTS . '.flag_id = 1 and ' . DB_TABLE_COMMENTS . '.post_id = ?';
-    echo $query;
     $statement = $conn->prepare($query);
     $statement->bind_param('i', $post_id);
     $comments = array();
@@ -227,11 +227,18 @@ function downvoteComment($token, $comment_id)
     return json_encode($message);
 }
 
-function removeComment($comment_id)
+/**
+ * Finished.
+ * @param $token
+ * @param $comment_id
+ * @return string
+ */
+function removeComment($token, $comment_id)
 {
+    $user_id = tokenToId($token);
     global $conn;
     $message = array();
-    if (checkIfLoggedIn()) {
+    if (checkIfLoggedIn($token)) {
         $query = 'UPDATE ' . DB_TABLE_COMMENTS . ' SET flag_id = 2 WHERE id = ?';
         $result = $conn->prepare($query);
         $result->bind_param('i', $comment_id);
@@ -247,6 +254,12 @@ function removeComment($comment_id)
     return json_encode($message);
 }
 
+/**
+ * Finished.
+ * @param $token
+ * @param $post_id
+ * @return string
+ */
 function getFilteredCommentsForUser($token, $post_id)
 {
     $user_id = tokenToId($token);
@@ -260,7 +273,7 @@ function getFilteredCommentsForUser($token, $post_id)
         (SELECT EXISTS(SELECT * FROM upvoted_comments WHERE upvoted_comments.comment_id = pt1.id AND upvoted_comments.user_id = 1)) AS upvoted
         FROM comments AS pt1
         JOIN users ON pt1.user_id = users.id
-        WHERE pt1.flag_id = 1 AND pt1.post_id = 1 AND users.id = 1';
+        WHERE pt1.flag_id = 1 AND pt1.post_id = ? AND users.id = ?';
     $comments = array();
     $statement = $conn->prepare($query);
     $statement->bind_param('ii', $user_id, $post_id);
@@ -283,5 +296,32 @@ function getFilteredCommentsForUser($token, $post_id)
         }
     }
     $message['comments'] = $comments;
+    return json_encode($message);
+}
+
+/**
+ * Finished.
+ * @param $token
+ * @param $comment_id
+ * @return string
+ */
+function reportPost($token, $comment_id)
+{
+    $user_id = (int)tokenToId($token);
+    global $conn;
+    $message = array();
+    if (checkIfLoggedIn($token)) {
+        $query = 'INSERT INTO ' . DB_TABLE_REPORTED_COMMENTS . ' (user_id, comment_id) VALUES (?, ?)';
+        $result = $conn->prepare($query);
+        $result->bind_param('ii', $user_id, $comment_id);
+        if ($result->execute()) {
+            $message['success'] = 'You have successfully reported the comment.';
+        } else {
+            $message['error'] = 'Database connection error.';
+        }
+    } else {
+        $message['error'] = 'Please log in.';
+        header('HTTP/1.1 401 Unauthorized');
+    }
     return json_encode($message);
 }

@@ -12,7 +12,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Author
 
 require '../comments_functions.php';
 
-if (isset($_POST['comment_id'])) {
+if (isset($_SERVER['HTTP_TOKEN']) && isset($_POST['comment_id'])) {
     $comment_id = $_POST['comment_id'];
     echo removeComment($comment_id);
 }
