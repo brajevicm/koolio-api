@@ -7,16 +7,14 @@
  */
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Token, token, TOKEN');
 
 require '../posts_functions.php';
 
-if (isset($_POST['offset']) && isset($_SERVER['HTTP_TOKEN'])) {
-    $offset = $_POST['offset'];
+if (isset($_SERVER['HTTP_TOKEN'])) {
     $token = $_SERVER['HTTP_TOKEN'];
-    echo getFilteredPostsForUserLimit($token, $offset);
-} elseif (isset($_POST['offset'])) {
-    $offset = $_POST['offset'];
-    echo getFilteredPostsLimit($offset);
+    echo getFilteredPostsForUser($token);
+} else {
+    echo getFilteredPosts();
 }
