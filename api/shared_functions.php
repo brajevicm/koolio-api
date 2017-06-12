@@ -74,8 +74,8 @@ function login($username, $password)
         $result->execute();
         $message['token'] = $id;
     } else {
-        header('HTTP/1.1 404 Unauthorized');
         $message = 'Invalid username or password';
+        header('HTTP/1.1 404 Unauthorized');
     }
     return json_encode($message);
 }

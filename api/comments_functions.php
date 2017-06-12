@@ -122,7 +122,7 @@ function getCommentsFromUser($token)
         ' . DB_TABLE_COMMENTS . '.flag_id, ' . DB_TABLE_COMMENTS . '.text, ' . DB_TABLE_COMMENTS . '.timestamp, 
         (SELECT username FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as user,
         (SELECT image FROM ' . DB_TABLE_USERS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as avatar,
-         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.user_id) as post,
+         (SELECT title FROM ' . DB_TABLE_POSTS . ' WHERE id = ' . DB_TABLE_COMMENTS . '.post_id) as post,
          (SELECT COUNT(*) FROM ' . DB_TABLE_UPVOTED_COMMENTS . ' WHERE comment_id = ' . DB_TABLE_COMMENTS . '.id) as upvotes
         FROM ' . DB_TABLE_COMMENTS . '
         JOIN ' . DB_TABLE_USERS . ' ON ' . DB_TABLE_COMMENTS . '.user_id = ' . DB_TABLE_USERS . '.id 
@@ -269,7 +269,7 @@ function getFilteredCommentsForUser($token, $post_id)
     $query = 'SELECT pt1.id, pt1.user_id, pt1.post_id, pt1.flag_id, pt1.text, pt1.timestamp,
 	    (SELECT username FROM users WHERE users.id = pt1.user_id) AS user,
 	    (SELECT image FROM users WHERE users.id = pt1.user_id) AS avatar,
-        (SELECT title FROM posts WHERE posts.id = pt1.user_id) AS post,
+        (SELECT title FROM posts WHERE posts.id = pt1.post_id) AS post,
         (SELECT COUNT(*) FROM upvoted_comments WHERE upvoted_comments.comment_id = pt1.id) AS upvotes,
         (SELECT COUNT(*) FROM reported_comments WHERE reported_comments.comment_id = pt1.id) AS reports,
         (SELECT EXISTS(SELECT * FROM upvoted_comments WHERE upvoted_comments.comment_id = pt1.id AND upvoted_comments.user_id = ?)) AS upvoted,
