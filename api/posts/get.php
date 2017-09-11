@@ -21,7 +21,6 @@ if (isset($_POST['offset']) && isset($_SERVER['HTTP_TOKEN'])) {
     echo getFilteredPostsLimit($offset);
 } elseif (isset($_POST['post_id']) && isset($_SERVER['HTTP_TOKEN'])) {
     $token = $_SERVER['HTTP_TOKEN'];
-    $offset = $_POST['offset'];
     $post_id = $_POST['post_id'];
     echo getPostForUser($token, $post_id);
 } elseif (isset($_POST['post_id'])) {
