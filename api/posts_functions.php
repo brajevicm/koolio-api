@@ -466,7 +466,7 @@ function getFilteredPostsForUserLimit($token, $offset)
             $post = array();
             $post['id'] = $row['id'];
             $post['user_id'] = $row['user_id'];
-            $post['users'] = $row['users'];
+            $post['user'] = $row['user'];
             $post['flag_id'] = $row['flag_id'];
             $post['title'] = $row['title'];
             $post['image'] = $row['image'];

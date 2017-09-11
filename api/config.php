@@ -8,7 +8,7 @@
 
 define('DB_NAME', 'koolio');
 define('DB_USER', 'root');
-define('DB_PASSWORD', 'pw');
+define('DB_PASSWORD', '');
 define('DB_HOST', 'localhost');
 define('DB_TABLE_USERS', 'users');
 define('DB_TABLE_COMMENTS', 'comments');
